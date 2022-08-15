@@ -1,0 +1,35 @@
+{
+  "name": "mongoose-querybuilder",
+  "version": "1.0.0",
+  "description": "QueryBuilder for mongoose",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && tsc-alias",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qwp0905/Mongoose-QueryBuilder.git"
+  },
+  "author": "KwonJin Jung <qwp0905@gmail.com> (https://github.com/qwp0905)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qwp0905/Mongoose-QueryBuilder/issues"
+  },
+  "homepage": "https://github.com/qwp0905/Mongoose-QueryBuilder#readme",
+  "devDependencies": {
+    "@types/node": "^18.7.3",
+    "@typescript-eslint/eslint-plugin": "^5.33.0",
+    "@typescript-eslint/parser": "^5.33.0",
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "ts-loader": "^9.3.1",
+    "tsc-alias": "^1.7.0",
+    "tsconfig-paths": "^4.1.0",
+    "typescript": "^4.7.4"
+  },
+  "bin": "dist/index.js"
+}

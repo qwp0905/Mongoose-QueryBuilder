@@ -1,0 +1,8 @@
+.vscode
+.node_modules
+.eslintrc.js
+src
+.prettierrc
+package-lock.json
+tsconfig.json
+.DS_Store
