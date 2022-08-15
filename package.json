@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc-alias",
     "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "eslint \"src/**/*.ts\" --fix"
+    "lint": "eslint \"src/**/*.ts\" --fix",
+    "publish": "npm run build && npm publish --access public"
   },
   "repository": {
     "type": "git",
