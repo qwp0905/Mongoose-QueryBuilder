@@ -40,8 +40,8 @@ export interface IQueryBuilder<TSchema> {
   ) => IQueryBuilder<TSchema>
 
   regex: <Keys extends QueryKey<TSchema>>(
-    key: QueryValue<TSchema, Keys> extends string ? Keys : never,
-    pattern?: RegExp | string
+    key: Keys,
+    pattern?: QueryValue<TSchema, Keys> extends string ? RegExp | string : never
   ) => IQueryBuilder<TSchema>
 
   in: <Keys extends QueryKey<TSchema>>(
