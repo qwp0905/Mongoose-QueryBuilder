@@ -92,5 +92,5 @@ export interface IQueryBuilder<TSchema> {
     conditions?: FilterQuery<TSchema> | Array<FilterQuery<TSchema>>
   ) => IQueryBuilder<TSchema>
 
-  build: () => FilterQuery<TSchema>
+  build: () => any
 }
