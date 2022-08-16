@@ -30,4 +30,12 @@ export interface IRootQuerySelector<TSchema> {
   $and?: Array<FilterQuery<TSchema>>
   $nor?: Array<FilterQuery<TSchema>>
   $or?: Array<FilterQuery<TSchema>>
+  $text?: {
+    $search: string
+    $language?: string
+    $caseSensitive?: boolean
+    $diacriticSensitive?: boolean
+  }
+  $where?: string | ((...arg: any[]) => any)
+  $comment?: string
 }
