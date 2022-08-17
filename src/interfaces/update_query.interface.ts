@@ -27,7 +27,9 @@ export interface IUpdateQueryBuilder<TSchema> {
 
   pull: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
     key: Keys,
-    value: FilterQuery<QueryValue<Omit<TSchema, '_id'>, Keys>>
+    value: QueryValue<Omit<TSchema, '_id'>, Keys> extends Array<infer U>
+      ? FilterQuery<U>
+      : never
   ) => IUpdateQueryBuilder<TSchema>
 
   build: () => any
