@@ -35,35 +35,26 @@ export type QueryKey<TSchema> =
   | {
       [P in keyof TSchema]: TSchema[P] extends NotObject
         ? never
-        : Join<
-            P extends symbol ? never : P,
-            {
-              [K in keyof TSchema[P]]: K extends symbol ? never : K
-            }[keyof TSchema[P]]
-          >
+        : `${P extends symbol ? never : P}.${{
+            [K in keyof TSchema[P]]: K extends symbol ? never : K
+          }[keyof TSchema[P]]}`
     }[keyof TSchema]
   | {
       [P in keyof TSchema]: TSchema[P] extends NotObject
         ? never
-        : Join<
-            P extends symbol ? never : P,
-            {
-              [K in keyof TSchema[P]]: TSchema[P][K] extends NotObject
-                ? never
-                : Join<
-                    K extends symbol ? never : K,
-                    {
-                      [U in keyof TSchema[P][K]]: U extends symbol ? never : U
-                    }[keyof TSchema[P][K]]
-                  >
-            }[keyof TSchema[P]]
-          >
+        : `${P extends symbol ? never : P}.${{
+            [K in keyof TSchema[P]]: TSchema[P][K] extends NotObject
+              ? never
+              : `${K extends symbol ? never : K}.${{
+                  [U in keyof TSchema[P][K]]: U extends symbol ? never : U
+                }[keyof TSchema[P][K]]}`
+          }[keyof TSchema[P]]}`
     }[keyof TSchema]
 
 export type QueryValue<
   TSchema,
   Keys extends QueryKey<TSchema>
-> = Keys extends Join<infer K1, Join<infer K2, infer K3>>
+> = Keys extends `${infer K1}.${infer K2}.${infer K3}`
   ? K1 extends keyof TSchema
     ? K2 extends keyof TSchema[K1]
       ? K3 extends keyof TSchema[K1][K2]
@@ -71,7 +62,7 @@ export type QueryValue<
         : never
       : never
     : never
-  : Keys extends Join<infer K1, infer K2>
+  : Keys extends `${infer K1}.${infer K2}`
   ? K1 extends keyof TSchema
     ? K2 extends keyof TSchema[K1]
       ? TSchema[K1][K2]
