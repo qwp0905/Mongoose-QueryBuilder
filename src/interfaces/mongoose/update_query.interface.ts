@@ -17,7 +17,14 @@ export interface IUpdateQuery<TSchema> {
       : never
   }
 
-  $pull?: { [P in QueryKey<Omit<TSchema, '_id'>>]?: FilterQuery<TSchema> }
+  $pull?: {
+    [P in QueryKey<Omit<TSchema, '_id'>>]?: QueryValue<
+      Omit<TSchema, '_id'>,
+      P
+    > extends Array<infer U>
+      ? U | FilterQuery<U>
+      : never
+  }
 
   $pop?: {
     [P in QueryKey<Omit<TSchema, '_id'>>]?: QueryValue<
