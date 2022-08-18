@@ -1,6 +1,6 @@
 {
   "name": "mongoose-querybuilder",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "QueryBuilder for mongoose",
   "main": "dist/index.js",
   "scripts": {
