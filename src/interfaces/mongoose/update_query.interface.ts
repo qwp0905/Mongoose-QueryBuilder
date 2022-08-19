@@ -22,7 +22,7 @@ export interface IUpdateQuery<TSchema> {
       Omit<TSchema, '_id'>,
       P
     > extends Array<infer U>
-      ? U | FilterQuery<U>
+      ? FilterQuery<U>
       : never
   }
 
