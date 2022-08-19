@@ -1,5 +1,5 @@
-import { FilterQuery, QueryKey, QueryValue } from '@type'
-import { IPushQuery } from '@interface'
+import { QueryKey, QueryValue } from '@type'
+import { IPushQuery, IQuerySelector } from '@interface'
 
 export interface IUpdateQuery<TSchema> {
   $set?: {
@@ -22,7 +22,7 @@ export interface IUpdateQuery<TSchema> {
       Omit<TSchema, '_id'>,
       P
     > extends Array<infer U>
-      ? FilterQuery<U>
+      ? { [K in QueryKey<U>]?: IQuerySelector<QueryValue<U, K>> }
       : never
   }
 
