@@ -28,6 +28,8 @@ export type SizeOperator<T> = T extends any[] ? number : never
 
 export type NotOperator<T> = T extends string
   ? IQuerySelector<T> | RegExp
+  : T extends any[]
+  ? IQuerySelector<T> & IArrayQuerySelector<T>
   : IQuerySelector<T>
 
 export type RegexOperator<T> = T extends string ? RegExp | string : never
