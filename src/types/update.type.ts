@@ -24,9 +24,9 @@ export type SortOperator<T> = T extends NotObject
 export type PullOperator<T> = {
   [P in QueryKey<T>]?: QueryValue<T, P> extends Array<infer U>
     ? U extends NotObject
-      ? U extends Array<infer K>
-        ? IArrayQuerySelector<K[]>
-        : IQuerySelector<U>
+      ? IQuerySelector<U>
+      : U extends Array<infer K>
+      ? IArrayQuerySelector<K[]> & IQuerySelector<K[]>
       : FilterQuery<U>
     : never
 }

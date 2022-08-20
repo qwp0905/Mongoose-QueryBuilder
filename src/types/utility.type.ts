@@ -3,7 +3,7 @@ export type ArrayKeys<T> = {
 }[keyof T]
 
 export type StringKeys<T> = {
-  [P in keyof T]: T[P] extends string ? P : never
+  [P in keyof T]: P extends symbol ? never : P
 }[keyof T]
 
 export type NotObject =
@@ -18,9 +18,10 @@ export type NotObject =
   | {
       _bsontype: string
     }
-  | any[]
 
 export type Join<
   T extends string | number,
   P extends string | number
 > = `${T}.${P}`
+
+export type StringNumber = `${number}`
