@@ -105,17 +105,13 @@ export type QueryKey<TSchema> =
         : `${P extends symbol ? never : P}${_QueryKey<TSchema[P]>}`
     }[keyof TSchema]
 
-type _QueryKey<TSchema> = TSchema extends NotObject
+type _QueryKey<T> = T extends NotObject
   ? ``
-  : `.${TSchema extends Array<infer A>
-      ?
-          | `${number}${_QueryKey<A> | ``}`
-          | {
-              [P in StringKeys<A>]: `${P}${_QueryKey<A[P]> | ``}`
-            }[StringKeys<A>]
+  : `.${T extends Array<infer A>
+      ? `${number}${_QueryKey<A> | ``}` | _QueryKey<A>
       : {
-          [P in StringKeys<TSchema>]: `${P}${_QueryKey<TSchema[P]> | ``}`
-        }[StringKeys<TSchema>]}`
+          [P in StringKeys<T>]: `${P}${_QueryKey<T[P]> | ``}`
+        }[StringKeys<T>]}`
 
 export type QueryValue<
   TSchema,
@@ -131,25 +127,25 @@ export type QueryValue<
   : never
 
 type _QueryValue<
-  TSchema,
-  Keys extends _QueryKey<TSchema>
+  T,
+  Keys extends _QueryKey<T>
 > = Keys extends `.${infer K1}.${infer K2}`
-  ? K1 extends keyof TSchema
-    ? `.${K2}` extends _QueryKey<TSchema[K1]>
-      ? _QueryValue<TSchema[K1], `.${K2}`>
+  ? K1 extends keyof T
+    ? `.${K2}` extends _QueryKey<T[K1]>
+      ? _QueryValue<T[K1], `.${K2}`>
       : never
     : K1 extends StringNumber
-    ? TSchema extends Array<infer U>
+    ? T extends Array<infer U>
       ? `.${K2}` extends _QueryKey<U>
         ? _QueryValue<U, `.${K2}`>
         : never
       : never
     : never
   : Keys extends `.${infer K1}`
-  ? K1 extends keyof TSchema
-    ? TSchema[K1]
+  ? K1 extends keyof T
+    ? T[K1]
     : K1 extends StringNumber
-    ? TSchema extends Array<infer U>
+    ? T extends Array<infer U>
       ? U
       : never
     : never
