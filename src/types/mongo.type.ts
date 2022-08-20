@@ -2,9 +2,7 @@ import {
   IDeleteManyOption,
   IDeleteOneOption,
   IInsertOneOption,
-  IQuerySelector,
   IReplaceOneOption,
-  IRootQuerySelector,
   IUpdateManyOption,
   IUpdateOneOption
 } from '@interface'
@@ -98,9 +96,3 @@ export type QueryValue<
   : Keys extends keyof TSchema
   ? TSchema[Keys]
   : never
-
-export type FilterQuery<TSchema> = IRootQuerySelector<TSchema> & {
-  [P in QueryKey<TSchema>]?:
-    | IQuerySelector<QueryValue<TSchema, P>>
-    | QueryValue<TSchema, P>
-}

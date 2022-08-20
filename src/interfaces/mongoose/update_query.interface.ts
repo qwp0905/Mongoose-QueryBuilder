@@ -1,37 +1,27 @@
-import { QueryKey, QueryValue } from '@type'
-import { IPushQuery, IQuerySelector } from '@interface'
+import {
+  PopOperator,
+  PullOperator,
+  PushOperator,
+  SetOperator,
+  SortOperator,
+  UnsetOperator
+} from '@type'
 
 export interface IUpdateQuery<TSchema> {
-  $set?: {
-    [P in QueryKey<Omit<TSchema, '_id'>>]?: QueryValue<Omit<TSchema, '_id'>, P>
-  }
+  $set?: SetOperator<Omit<TSchema, '_id'>>
 
-  $unset?: { [P in QueryKey<Omit<TSchema, '_id'>>]?: 1 }
+  $unset?: UnsetOperator<Omit<TSchema, '_id'>>
 
-  $push?: {
-    [P in QueryKey<Omit<TSchema, '_id'>>]?: QueryValue<
-      Omit<TSchema, '_id'>,
-      P
-    > extends Array<infer U>
-      ? U | IPushQuery<U>
-      : never
-  }
+  $push?: PushOperator<Omit<TSchema, '_id'>>
 
-  $pull?: {
-    [P in QueryKey<Omit<TSchema, '_id'>>]?: QueryValue<
-      Omit<TSchema, '_id'>,
-      P
-    > extends Array<infer U>
-      ? { [K in QueryKey<U>]?: IQuerySelector<QueryValue<U, K>> }
-      : never
-  }
+  $pull?: PullOperator<Omit<TSchema, '_id'>>
 
-  $pop?: {
-    [P in QueryKey<Omit<TSchema, '_id'>>]?: QueryValue<
-      Omit<TSchema, '_id'>,
-      P
-    > extends any[]
-      ? 1 | -1
-      : never
-  }
+  $pop?: PopOperator<Omit<TSchema, '_id'>>
+}
+
+export interface IPushQuery<T> {
+  $slice?: number
+  $each: Array<T>
+  $sort?: SortOperator<T>
+  $position?: number
 }

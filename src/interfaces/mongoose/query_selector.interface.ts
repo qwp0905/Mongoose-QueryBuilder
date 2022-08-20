@@ -1,4 +1,11 @@
-import { FilterQuery, NotObject } from '@type'
+import {
+  AllOperator,
+  ElemMatchOperator,
+  FilterQuery,
+  NotOperator,
+  RegexOperator,
+  SizeOperator
+} from '@type'
 
 export interface IQuerySelector<T> {
   // Comparison
@@ -11,19 +18,16 @@ export interface IQuerySelector<T> {
   $ne?: T
   $nin?: T[]
   // Logical
-  $not?: T extends string ? IQuerySelector<T> | RegExp : IQuerySelector<T>
+  $not?: NotOperator<T>
   // Element
   $exists?: boolean
-  $regex?: T extends string ? RegExp | string : never
-  $all?: T extends Array<infer U> ? U[] : never
-  $elemMatch?: T extends Array<infer U>
-    ? U extends NotObject
-      ? U extends Array<infer K>
-        ? { $size?: number; $all?: K[]; $elemMatch?: any }
-        : IQuerySelector<U>
-      : FilterQuery<U>
-    : never
-  $size?: T extends any[] ? number : never
+  $regex?: RegexOperator<T>
+}
+
+export interface IArrayQuerySelector<T> {
+  $all?: AllOperator<T>
+  $elemMatch?: ElemMatchOperator<T>
+  $size?: SizeOperator<T>
 }
 
 export interface IRootQuerySelector<TSchema> {

@@ -1,4 +1,9 @@
-import { IQueryBuilder, IQuerySelector, IRootQuerySelector } from '@interface'
+import {
+  IArrayQuerySelector,
+  IQueryBuilder,
+  IQuerySelector,
+  IRootQuerySelector
+} from '@interface'
 import { FilterQuery, QueryKey } from '@type'
 
 export const QueryBuilder = <T>(): IQueryBuilder<T> => {
@@ -6,7 +11,7 @@ export const QueryBuilder = <T>(): IQueryBuilder<T> => {
 
   const setKey = <Keys extends QueryKey<T>>(
     key: Keys,
-    tag: keyof IQuerySelector<any>,
+    tag: keyof IQuerySelector<any> | keyof IArrayQuerySelector<any>,
     value: any
   ) => {
     if (value === undefined) return
