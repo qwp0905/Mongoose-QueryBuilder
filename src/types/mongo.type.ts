@@ -107,11 +107,11 @@ export type QueryKey<TSchema> =
 
 type _QueryKey<T> = T extends NotObject
   ? ``
-  : `.${T extends Array<infer A>
-      ? `${number}${_QueryKey<A> | ``}` | _QueryKey<A>
-      : {
-          [P in StringKeys<T>]: `${P}${_QueryKey<T[P]> | ``}`
-        }[StringKeys<T>]}`
+  : T extends Array<infer A>
+  ? `.${number}${_QueryKey<A> | ``}` | _QueryKey<A>
+  : `.${{
+      [P in StringKeys<T>]: `${P}${_QueryKey<T[P]> | ``}`
+    }[StringKeys<T>]}`
 
 export type QueryValue<
   TSchema,
