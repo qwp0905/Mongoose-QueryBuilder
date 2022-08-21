@@ -1,5 +1,10 @@
-import { IArrayQuerySelector, IPushQuery, IQuerySelector } from '@interface'
-import { QueryKey, QueryValue, NotObject, FilterQuery } from '@type'
+import {
+  IArrayQuerySelector,
+  IPushQuery,
+  IQuerySelector,
+  IRootQuerySelector
+} from '@interface'
+import { QueryKey, QueryValue, NotObject } from '@type'
 
 export type SetOperator<T> = {
   [P in QueryKey<T>]?: QueryValue<T, P>
@@ -27,7 +32,13 @@ export type PullOperator<T> = {
       ? IQuerySelector<U>
       : U extends Array<infer K>
       ? IArrayQuerySelector<K[]> & IQuerySelector<K[]>
-      : FilterQuery<U>
+      : {
+          [K in QueryKey<U>]?: IRootQuerySelector<U> &
+            (QueryValue<U, K> extends any[]
+              ? IArrayQuerySelector<QueryValue<U, K>> &
+                  IQuerySelector<QueryValue<U, K>>
+              : IQuerySelector<QueryValue<U, K>>)
+        }
     : never
 }
 
