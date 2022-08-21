@@ -126,27 +126,32 @@ export type QueryValue<
   ? TSchema[Keys]
   : never
 
-type _QueryValue<
-  T,
-  Keys extends _QueryKey<T>
-> = Keys extends `.${infer K1}.${infer K2}`
+type _QueryValue<T, Keys extends _QueryKey<T>> = T extends (infer U)[]
+  ? Keys extends `.${infer K1}.${infer K2}`
+    ? K1 extends keyof U
+      ? `.${K2}` extends _QueryKey<U[K1]>
+        ? _QueryValue<U[K1], `.${K2}`>
+        : never
+      : K1 extends StringNumber
+      ? `.${K2}` extends _QueryKey<U[]>
+        ? _QueryValue<U[], `.${K2}`>
+        : never
+      : never
+    : Keys extends `.${number}`
+    ? U
+    : Keys extends `.${infer K1}`
+    ? K1 extends keyof U
+      ? U[K1]
+      : never
+    : never
+  : Keys extends `.${infer K1}.${infer K2}`
   ? K1 extends keyof T
     ? `.${K2}` extends _QueryKey<T[K1]>
       ? _QueryValue<T[K1], `.${K2}`>
-      : never
-    : K1 extends StringNumber
-    ? T extends Array<infer U>
-      ? `.${K2}` extends _QueryKey<U>
-        ? _QueryValue<U, `.${K2}`>
-        : never
       : never
     : never
   : Keys extends `.${infer K1}`
   ? K1 extends keyof T
     ? T[K1]
-    : K1 extends StringNumber
-    ? T extends Array<infer U>
-      ? U
-      : never
     : never
   : never

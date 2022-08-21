@@ -16,9 +16,9 @@ export type PushOperator<T> = {
 }
 
 export type SortOperator<T> = T extends NotObject
-  ? T extends any[]
-    ? never
-    : 1 | -1
+  ? 1 | -1
+  : T extends any[]
+  ? never
   : { [P in QueryKey<T>]?: 1 | -1 }
 
 export type PullOperator<T> = {
@@ -33,4 +33,8 @@ export type PullOperator<T> = {
 
 export type PopOperator<T> = {
   [P in QueryKey<T>]?: QueryValue<T, P> extends any[] ? 1 | -1 : never
+}
+
+export type IncOperator<T> = {
+  [P in QueryKey<T>]?: QueryValue<T, P> extends number ? number : never
 }

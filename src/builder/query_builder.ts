@@ -11,16 +11,14 @@ export const QueryBuilder = <T>(): IQueryBuilder<T> => {
 
   const setKey = <Keys extends QueryKey<T>>(
     key: Keys,
-    tag: keyof IQuerySelector<any> | keyof IArrayQuerySelector<any>,
-    value: any
+    tag: keyof IQuerySelector<unknown> | keyof IArrayQuerySelector<unknown>,
+    value: unknown
   ) => {
     if (value === undefined) return
 
     if (Array.isArray(value) && !value.length) return
 
-    const condition: any = {}
-
-    if (!query[key]) query[key] = condition
+    if (!query[key]) query[key] = {} as FilterQuery<T>[Keys]
 
     if (!query[key][tag]) {
       query[key][tag] = value

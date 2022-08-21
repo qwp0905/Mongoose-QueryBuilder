@@ -1,7 +1,3 @@
-export type ArrayKeys<T> = {
-  [P in keyof T]: T[P] extends any[] ? P : never
-}[keyof T]
-
 export type StringKeys<T> = {
   [P in keyof T]: P extends symbol ? never : P
 }[keyof T]
@@ -25,3 +21,5 @@ export type Join<
 > = `${T}.${P}`
 
 export type StringNumber = `${number}`
+
+export type Flatten<T> = T extends Array<infer U> ? U : T

@@ -62,5 +62,5 @@ export interface IBulkBuilder<TSchema> {
   updateMany: (options: IUpdateManyOption<TSchema>) => IBulkBuilder<TSchema>
   deleteOne: (options: IDeleteOneOption<TSchema>) => IBulkBuilder<TSchema>
   deleteMany: (options: IDeleteManyOption<TSchema>) => IBulkBuilder<TSchema>
-  build: () => Bulk<TSchema>[]
+  build: () => any[] //! type does not match to mongodb package, specifically $pop!
 }

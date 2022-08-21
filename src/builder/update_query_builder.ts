@@ -24,7 +24,7 @@ export const UpdateQueryBuilder = <T>(): IUpdateQueryBuilder<T> => {
         return this
       }
       if (!query.$push) query.$push = {}
-      query.$push[key] = value
+      query.$push = { ...query.$push, value }
       return this
     },
     pop(key, value) {
@@ -32,7 +32,7 @@ export const UpdateQueryBuilder = <T>(): IUpdateQueryBuilder<T> => {
         return this
       }
       if (!query.$pop) query.$pop = {}
-      query.$pop[key] = value
+      query.$pop = { ...query.$pop, [key]: value }
       return this
     },
     pull(key, value) {
@@ -41,6 +41,12 @@ export const UpdateQueryBuilder = <T>(): IUpdateQueryBuilder<T> => {
       }
       if (!query.$pull) query.$pull = {}
       query.$pull = { ...query.$pull, [key]: value }
+      return this
+    },
+    inc(key, value) {
+      if (!query.$inc) query.$inc = {}
+      query.$inc = { ...query.$inc, [key]: value }
+
       return this
     },
     build() {
