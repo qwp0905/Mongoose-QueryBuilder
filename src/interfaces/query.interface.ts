@@ -38,7 +38,9 @@ export interface IQueryBuilder<TSchema> {
   ) => IQueryBuilder<TSchema>
 
   regex: <Keys extends QueryKey<TSchema>>(
-    key: QueryValue<TSchema, Keys> extends string ? Keys : never,
+    key: {
+      [P in Keys]: QueryValue<TSchema, P> extends string ? P : never
+    }[Keys],
     value?: IQuerySelector<QueryValue<TSchema, Keys>>['$regex']
   ) => IQueryBuilder<TSchema>
 
@@ -58,17 +60,23 @@ export interface IQueryBuilder<TSchema> {
   ) => IQueryBuilder<TSchema>
 
   all: <Keys extends QueryKey<TSchema>>(
-    key: QueryValue<TSchema, Keys> extends any[] ? Keys : never,
+    key: {
+      [P in Keys]: QueryValue<TSchema, P> extends any[] ? P : never
+    }[Keys],
     value?: IArrayQuerySelector<QueryValue<TSchema, Keys>>['$all']
   ) => IQueryBuilder<TSchema>
 
   size: <Keys extends QueryKey<TSchema>>(
-    key: QueryValue<TSchema, Keys> extends any[] ? Keys : never,
+    key: {
+      [P in Keys]: QueryValue<TSchema, P> extends any[] ? P : never
+    }[Keys],
     value?: IArrayQuerySelector<QueryValue<TSchema, Keys>>['$size']
   ) => IQueryBuilder<TSchema>
 
   elemMatch: <Keys extends QueryKey<TSchema>>(
-    key: QueryValue<TSchema, Keys> extends any[] ? Keys : never,
+    key: {
+      [P in Keys]: QueryValue<TSchema, P> extends any[] ? P : never
+    }[Keys],
     value?: IArrayQuerySelector<QueryValue<TSchema, Keys>>['$elemMatch']
   ) => IQueryBuilder<TSchema>
 
