@@ -1,8 +1,8 @@
 import {
-  IArrayQuerySelector,
   IPushQuery,
   IQuerySelector,
-  IRootQuerySelector
+  IRootQuerySelector,
+  ISelector
 } from '@interface'
 import { QueryKey, QueryValue, NotObject } from '@type'
 
@@ -30,14 +30,8 @@ export type PullOperator<T> = {
   [P in QueryKey<T>]?: QueryValue<T, P> extends Array<infer U>
     ? U extends NotObject
       ? IQuerySelector<U>
-      : U extends Array<infer K>
-      ? IArrayQuerySelector<K[]> & IQuerySelector<K[]>
-      : {
-          [K in QueryKey<U>]?: IRootQuerySelector<U> &
-            (QueryValue<U, K> extends any[]
-              ? IArrayQuerySelector<QueryValue<U, K>> &
-                  IQuerySelector<QueryValue<U, K>>
-              : IQuerySelector<QueryValue<U, K>>)
+      : IRootQuerySelector<U> & {
+          [K in QueryKey<U>]?: ISelector<QueryValue<U, K>>
         }
     : never
 }

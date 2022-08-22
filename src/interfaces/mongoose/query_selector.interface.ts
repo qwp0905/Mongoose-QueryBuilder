@@ -7,6 +7,10 @@ import {
   SizeOperator
 } from '@type'
 
+export interface ISelector<T>
+  extends IQuerySelector<T>,
+    IArrayQuerySelector<T> {}
+
 export interface IQuerySelector<T> {
   // Comparison
   $eq?: T
