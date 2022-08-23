@@ -20,6 +20,12 @@ export type PushOperator<T> = {
     : never
 }
 
+export type AddToSetOperator<T> = {
+  [P in QueryKey<T>]?: QueryValue<T, P> extends (infer U)[]
+    ? U | { $each: U[] }
+    : never
+}
+
 export type SortOperator<T> = T extends NotObject
   ? 1 | -1
   : T extends any[]

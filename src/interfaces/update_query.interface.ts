@@ -47,5 +47,14 @@ export interface IUpdateQueryBuilder<TSchema> {
     value: IUpdateQuery<TSchema>['$inc'][Keys]
   ) => IUpdateQueryBuilder<TSchema>
 
+  addToSet: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
+    key: {
+      [P in Keys]: QueryValue<Omit<TSchema, '_id'>, Keys> extends any[]
+        ? P
+        : never
+    }[Keys],
+    value?: IUpdateQuery<TSchema>['$addToSet'][Keys]
+  ) => IUpdateQueryBuilder<TSchema>
+
   build: () => IUpdateQuery<TSchema>
 }

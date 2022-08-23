@@ -1,4 +1,5 @@
 import {
+  AddToSetOperator,
   IncOperator,
   PopOperator,
   PullOperator,
@@ -20,6 +21,8 @@ export interface IUpdateQuery<TSchema> {
   $pop?: PopOperator<Omit<TSchema, '_id'>>
 
   $inc?: IncOperator<Omit<TSchema, '_id'>>
+
+  $addToSet?: AddToSetOperator<Omit<TSchema, '_id'>>
 }
 
 export interface IPushQuery<T> {
