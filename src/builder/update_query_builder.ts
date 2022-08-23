@@ -24,7 +24,7 @@ export const UpdateQueryBuilder = <T>(): IUpdateQueryBuilder<T> => {
         return this
       }
       if (!query.$push) query.$push = {}
-      query.$push = { ...query.$push, value }
+      query.$push = { ...query.$push, [key]: value }
       return this
     },
     pop(key, value) {
