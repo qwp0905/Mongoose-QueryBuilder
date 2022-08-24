@@ -31,17 +31,17 @@ export type Bulk<TSchema> =
 export type QueryKey<TSchema> =
   | { [P in keyof TSchema]: P extends symbol ? never : P }[keyof TSchema]
   | {
-      [P in keyof TSchema]: TSchema[P] extends NotObject
+      [P in keyof TSchema]: TSchema[P] extends NotObject & any[]
         ? never
         : `${P extends symbol ? never : P}.${{
             [K in keyof TSchema[P]]: K extends symbol ? never : K
           }[keyof TSchema[P]]}`
     }[keyof TSchema]
   | {
-      [P in keyof TSchema]: TSchema[P] extends NotObject
+      [P in keyof TSchema]: TSchema[P] extends NotObject & any[]
         ? never
         : `${P extends symbol ? never : P}.${{
-            [K in keyof TSchema[P]]: TSchema[P][K] extends NotObject
+            [K in keyof TSchema[P]]: TSchema[P][K] extends NotObject & any[]
               ? never
               : `${K extends symbol ? never : K}.${{
                   [U in keyof TSchema[P][K]]: U extends symbol ? never : U
@@ -49,13 +49,14 @@ export type QueryKey<TSchema> =
           }[keyof TSchema[P]]}`
     }[keyof TSchema]
   | {
-      [P in keyof TSchema]: TSchema[P] extends NotObject
+      [P in keyof TSchema]: TSchema[P] extends NotObject & any[]
         ? never
         : `${P extends symbol ? never : P}.${{
-            [K in keyof TSchema[P]]: TSchema[P][K] extends NotObject
+            [K in keyof TSchema[P]]: TSchema[P][K] extends NotObject & any[]
               ? never
               : `${K extends symbol ? never : K}.${{
-                  [U in keyof TSchema[P][K]]: TSchema[P][K][U] extends NotObject
+                  [U in keyof TSchema[P][K]]: TSchema[P][K][U] extends NotObject &
+                    any[]
                     ? never
                     : `${U extends symbol ? never : U}.${{
                         [L in keyof TSchema[P][K][U]]: L extends symbol
