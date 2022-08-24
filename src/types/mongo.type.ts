@@ -48,39 +48,11 @@ export type QueryKey<TSchema> =
                 }[keyof TSchema[P][K]]}`
           }[keyof TSchema[P]]}`
     }[keyof TSchema]
-  | {
-      [P in keyof TSchema]: TSchema[P] extends NotObject & any[]
-        ? never
-        : `${P extends symbol ? never : P}.${{
-            [K in keyof TSchema[P]]: TSchema[P][K] extends NotObject & any[]
-              ? never
-              : `${K extends symbol ? never : K}.${{
-                  [U in keyof TSchema[P][K]]: TSchema[P][K][U] extends NotObject &
-                    any[]
-                    ? never
-                    : `${U extends symbol ? never : U}.${{
-                        [L in keyof TSchema[P][K][U]]: L extends symbol
-                          ? never
-                          : L
-                      }[keyof TSchema[P][K][U]]}`
-                }[keyof TSchema[P][K]]}`
-          }[keyof TSchema[P]]}`
-    }[keyof TSchema]
 
 export type QueryValue<
   TSchema,
   Keys extends QueryKey<TSchema>
-> = Keys extends `${infer K1}.${infer K2}.${infer K3}.${infer K4}`
-  ? K1 extends keyof TSchema
-    ? K2 extends keyof TSchema[K1]
-      ? K3 extends keyof TSchema[K1][K2]
-        ? K4 extends keyof TSchema[K1][K2][K3]
-          ? TSchema[K1][K2][K3][K4]
-          : never
-        : never
-      : never
-    : never
-  : Keys extends `${infer K1}.${infer K2}.${infer K3}`
+> = Keys extends `${infer K1}.${infer K2}.${infer K3}`
   ? K1 extends keyof TSchema
     ? K2 extends keyof TSchema[K1]
       ? K3 extends keyof TSchema[K1][K2]
