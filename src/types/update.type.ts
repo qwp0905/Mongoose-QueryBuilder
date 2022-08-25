@@ -35,7 +35,7 @@ export type SortOperator<T> = T extends NotObject
 export type PullOperator<T> = {
   [P in QueryKey<T>]?: QueryValue<T, P> extends Array<infer U>
     ? U extends NotObject
-      ? IQuerySelector<U>
+      ? Omit<IQuerySelector<U>, '$eq'>
       : IRootQuerySelector<U> & {
           [K in QueryKey<U>]?: ISelector<QueryValue<U, K>>
         }
