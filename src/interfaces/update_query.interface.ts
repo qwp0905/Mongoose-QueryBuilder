@@ -1,10 +1,19 @@
-import { PopOperator, QueryKey, QueryValue } from '@type'
+import {
+  AddToSetOperator,
+  IncOperator,
+  PopOperator,
+  PullOperator,
+  PushOperator,
+  QueryKey,
+  QueryValue,
+  SetOperator
+} from '@type'
 import { IUpdateQuery } from '@interface'
 
 export interface IUpdateQueryBuilder<TSchema> {
   set: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
     key: Keys,
-    value?: IUpdateQuery<TSchema>['$set'][Keys]
+    value?: SetOperator<Omit<TSchema, '_id'>>
   ) => IUpdateQueryBuilder<TSchema>
 
   unset: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
@@ -17,7 +26,7 @@ export interface IUpdateQueryBuilder<TSchema> {
         ? P
         : never
     }[Keys],
-    value?: IUpdateQuery<TSchema>['$push'][Keys]
+    value?: PushOperator<Omit<TSchema, '_id'>>
   ) => IUpdateQueryBuilder<TSchema>
 
   pop: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
@@ -35,7 +44,7 @@ export interface IUpdateQueryBuilder<TSchema> {
         ? P
         : never
     }[Keys],
-    value: IUpdateQuery<TSchema>['$pull'][Keys]
+    value: PullOperator<Omit<TSchema, '_id'>>
   ) => IUpdateQueryBuilder<TSchema>
 
   inc: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
@@ -44,7 +53,7 @@ export interface IUpdateQueryBuilder<TSchema> {
         ? P
         : never
     }[Keys],
-    value: IUpdateQuery<TSchema>['$inc'][Keys]
+    value: IncOperator<Omit<TSchema, '_id'>>
   ) => IUpdateQueryBuilder<TSchema>
 
   addToSet: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
@@ -53,7 +62,7 @@ export interface IUpdateQueryBuilder<TSchema> {
         ? P
         : never
     }[Keys],
-    value?: IUpdateQuery<TSchema>['$addToSet'][Keys]
+    value?: AddToSetOperator<Omit<TSchema, '_id'>>
   ) => IUpdateQueryBuilder<TSchema>
 
   build: () => IUpdateQuery<TSchema>

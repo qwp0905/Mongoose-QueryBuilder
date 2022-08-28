@@ -1,83 +1,91 @@
-import { QueryKey, QueryValue, FilterQuery } from '@type'
-import { IQuerySelector, IArrayQuerySelector } from '@interface'
+import {
+  QueryKey,
+  QueryValue,
+  FilterQuery,
+  NotOperator,
+  RegexOperator,
+  AllOperator,
+  SizeOperator,
+  ElemMatchOperator
+} from '@type'
 
 export interface IQueryBuilder<TSchema> {
   eq: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$eq']
+    value?: QueryValue<TSchema, Keys>
   ) => IQueryBuilder<TSchema>
 
   not: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$not']
+    value?: NotOperator<QueryValue<TSchema, Keys>>
   ) => IQueryBuilder<TSchema>
 
   gt: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$gt']
+    value?: QueryValue<TSchema, Keys>
   ) => IQueryBuilder<TSchema>
 
   gte: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$gte']
+    value?: QueryValue<TSchema, Keys>
   ) => IQueryBuilder<TSchema>
 
   lt: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$lt']
+    value?: QueryValue<TSchema, Keys>
   ) => IQueryBuilder<TSchema>
 
   lte: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$lte']
+    value?: QueryValue<TSchema, Keys>
   ) => IQueryBuilder<TSchema>
 
   exists: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$exists']
+    value?: boolean
   ) => IQueryBuilder<TSchema>
 
   regex: <Keys extends QueryKey<TSchema>>(
     key: {
       [P in Keys]: QueryValue<TSchema, P> extends string ? P : never
     }[Keys],
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$regex']
+    value?: RegexOperator<QueryValue<TSchema, Keys>>
   ) => IQueryBuilder<TSchema>
 
   in: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$in']
+    value?: QueryValue<TSchema, Keys>[]
   ) => IQueryBuilder<TSchema>
 
   ne: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$ne']
+    value?: QueryValue<TSchema, Keys>
   ) => IQueryBuilder<TSchema>
 
   nin: <Keys extends QueryKey<TSchema>>(
     key: Keys,
-    value?: IQuerySelector<QueryValue<TSchema, Keys>>['$nin']
+    value?: QueryValue<TSchema, Keys>[]
   ) => IQueryBuilder<TSchema>
 
   all: <Keys extends QueryKey<TSchema>>(
     key: {
       [P in Keys]: QueryValue<TSchema, P> extends any[] ? P : never
     }[Keys],
-    value?: IArrayQuerySelector<QueryValue<TSchema, Keys>>['$all']
+    value?: AllOperator<QueryValue<TSchema, Keys>>
   ) => IQueryBuilder<TSchema>
 
   size: <Keys extends QueryKey<TSchema>>(
     key: {
       [P in Keys]: QueryValue<TSchema, P> extends any[] ? P : never
     }[Keys],
-    value?: IArrayQuerySelector<QueryValue<TSchema, Keys>>['$size']
+    value?: SizeOperator<QueryValue<TSchema, Keys>>
   ) => IQueryBuilder<TSchema>
 
   elemMatch: <Keys extends QueryKey<TSchema>>(
     key: {
       [P in Keys]: QueryValue<TSchema, P> extends any[] ? P : never
     }[Keys],
-    value?: IArrayQuerySelector<QueryValue<TSchema, Keys>>['$elemMatch']
+    value?: ElemMatchOperator<QueryValue<TSchema, Keys>>
   ) => IQueryBuilder<TSchema>
 
   or: (
