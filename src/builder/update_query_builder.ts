@@ -11,7 +11,7 @@ export const UpdateQueryBuilder = <T>(): IUpdateQueryBuilder<T> => {
         return this
       }
       if (!query.$set) query.$set = {}
-      query.$set = { ...query.$set, [key]: value }
+      query.$set[key] = value
       return this
     },
     unset(key) {
