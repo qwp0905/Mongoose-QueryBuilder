@@ -9,7 +9,6 @@ export type NotObject =
   | Date
   | RegExp
   | Buffer
-  | Uint8Array
   | ((...args: any[]) => any)
   | {
       _bsontype: string
@@ -19,6 +18,12 @@ export type Join<
   T extends string | number,
   P extends string | number
 > = `${T}.${P}`
+
+export type MaxDepth = 0 | 1 | 2
+
+export type Next<T extends number> = [1, 2, 3][T]
+
+export type Before<T extends number> = [-1, 0, 1][T]
 
 export type StringNumber =
   | '0'
