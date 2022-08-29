@@ -1,12 +1,4 @@
 import {
-  IDeleteManyOption,
-  IDeleteOneOption,
-  IInsertOneOption,
-  IReplaceOneOption,
-  IUpdateManyOption,
-  IUpdateOneOption
-} from '@interface'
-import {
   NotObject,
   StringKeys,
   StringNumber,
@@ -14,26 +6,6 @@ import {
   Next,
   Before
 } from '@type'
-
-export type Bulk<TSchema> =
-  | {
-      insertOne: IInsertOneOption<TSchema>
-    }
-  | {
-      replaceOne: IReplaceOneOption<TSchema>
-    }
-  | {
-      updateOne: IUpdateOneOption<TSchema>
-    }
-  | {
-      updateMany: IUpdateManyOption<TSchema>
-    }
-  | {
-      deleteOne: IDeleteOneOption<TSchema>
-    }
-  | {
-      deleteMany: IDeleteManyOption<TSchema>
-    }
 
 // export type QueryKey<TSchema> =
 //   | { [P in keyof TSchema]: P extends symbol ? never : P }[keyof TSchema]
@@ -88,7 +60,7 @@ export type QueryKey<TSchema> =
 type _QueryKey<T, Depth extends number> = Depth extends MaxDepth
   ? T extends NotObject
     ? never
-    : T extends Array<infer A>
+    : T extends (infer A)[]
     ?
         | `.${StringNumber}`
         | `.${StringNumber}${_QueryKey<A, Next<Depth>>}`
@@ -140,3 +112,11 @@ type _QueryValue<T, Keys extends _QueryKey<T, MaxDepth>> = T extends (infer U)[]
     ? T[K1]
     : never
   : never
+
+export type ExcludeKeys<TSchema, K> = {
+  [P in QueryKey<TSchema>]: QueryValue<TSchema, P> extends K ? never : P
+}[QueryKey<TSchema>]
+
+export type PickKeys<TSchema, K> = {
+  [P in QueryKey<TSchema>]: QueryValue<TSchema, P> extends K ? P : never
+}[QueryKey<TSchema>]

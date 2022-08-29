@@ -35,9 +35,9 @@ export interface IArrayQuerySelector<T> {
 }
 
 export interface IRootQuerySelector<TSchema> {
-  $and?: Array<FilterQuery<TSchema>>
-  $nor?: Array<FilterQuery<TSchema>>
-  $or?: Array<FilterQuery<TSchema>>
+  $and?: FilterQuery<TSchema>[]
+  $nor?: FilterQuery<TSchema>[]
+  $or?: FilterQuery<TSchema>[]
   // $text?: {
   //   $search: string
   //   $language?: string

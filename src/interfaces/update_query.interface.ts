@@ -1,77 +1,43 @@
-import { NotObject, QueryKey, QueryValue } from '@type'
-import {
-  IUpdateQuery,
-  IPushQuery,
-  IQuerySelector,
-  IRootQuerySelector,
-  ISelector
-} from '@interface'
+import { Flatten, PickKeys, QueryKey, QueryValue } from '@type'
+import { IUpdateQuery, IPushQuery, ISelector } from '@interface'
 
 export interface IUpdateQueryBuilder<TSchema> {
-  set: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
-    key: Keys,
-    value?: QueryValue<Omit<TSchema, '_id'>, Keys>
+  set: <Key extends QueryKey<Omit<TSchema, '_id'>>>(
+    key: Key,
+    value?: QueryValue<Omit<TSchema, '_id'>, Key>
   ) => IUpdateQueryBuilder<TSchema>
 
-  unset: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
-    key: Keys
+  unset: <Key extends QueryKey<Omit<TSchema, '_id'>>>(
+    key: Key
   ) => IUpdateQueryBuilder<TSchema>
 
-  push: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
-    key: {
-      [P in Keys]: QueryValue<Omit<TSchema, '_id'>, Keys> extends any[]
-        ? P
-        : never
-    }[Keys],
-    value?: QueryValue<Omit<TSchema, '_id'>, Keys> extends (infer U)[]
-      ? U | IPushQuery<U>
-      : never
+  push: <Key extends PickKeys<Omit<TSchema, '_id'>, any[]>>(
+    key: Key,
+    value?:
+      | Flatten<QueryValue<Omit<TSchema, '_id'>, Key>>
+      | IPushQuery<Flatten<QueryValue<Omit<TSchema, '_id'>, Key>>>
   ) => IUpdateQueryBuilder<TSchema>
 
-  pop: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
-    key: {
-      [P in Keys]: QueryValue<Omit<TSchema, '_id'>, Keys> extends any[]
-        ? P
-        : never
-    }[Keys],
-    value?: QueryValue<Omit<TSchema, '_id'>, Keys> extends any[]
-      ? 1 | -1
-      : never
+  pop: <Key extends PickKeys<Omit<TSchema, '_id'>, any[]>>(
+    key: Key,
+    value?: 1 | -1
   ) => IUpdateQueryBuilder<TSchema>
 
-  pull: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
-    key: {
-      [P in Keys]: QueryValue<Omit<TSchema, '_id'>, Keys> extends any[]
-        ? P
-        : never
-    }[Keys],
-    value: QueryValue<Omit<TSchema, '_id'>, Keys> extends (infer U)[]
-      ? U extends NotObject
-        ? Omit<IQuerySelector<U>, '$eq'>
-        : IRootQuerySelector<U> & {
-            [K in QueryKey<U>]?: ISelector<QueryValue<U, K>>
-          }
-      : never
+  pull: <Key extends PickKeys<Omit<TSchema, '_id'>, any[]>>(
+    key: Key,
+    value:
+      | Flatten<QueryValue<Omit<TSchema, '_id'>, Key>>
+      | ISelector<Flatten<QueryValue<Omit<TSchema, '_id'>, Key>>>
   ) => IUpdateQueryBuilder<TSchema>
 
-  inc: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
-    key: {
-      [P in Keys]: QueryValue<Omit<TSchema, '_id'>, Keys> extends number
-        ? P
-        : never
-    }[Keys],
-    value: QueryValue<Omit<TSchema, '_id'>, Keys> extends number
-      ? number
-      : never
+  inc: <Key extends PickKeys<Omit<TSchema, '_id'>, number>>(
+    key: Key,
+    value: number
   ) => IUpdateQueryBuilder<TSchema>
 
-  addToSet: <Keys extends QueryKey<Omit<TSchema, '_id'>>>(
-    key: {
-      [P in Keys]: QueryValue<Omit<TSchema, '_id'>, Keys> extends any[]
-        ? P
-        : never
-    }[Keys],
-    value?: QueryValue<Omit<TSchema, '_id'>, Keys> extends (infer U)[]
+  addToSet: <Key extends PickKeys<Omit<TSchema, '_id'>, any[]>>(
+    key: Key,
+    value?: QueryValue<Omit<TSchema, '_id'>, Key> extends (infer U)[]
       ? U | { $each: U[] }
       : never
   ) => IUpdateQueryBuilder<TSchema>

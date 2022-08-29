@@ -27,7 +27,7 @@ export const QueryBuilder = <T>(): IQueryBuilder<T> => {
 
   const setCondition = (
     tag: keyof IRootQuerySelector<T>,
-    condition?: FilterQuery<T> | Array<FilterQuery<T>>
+    condition?: FilterQuery<T> | FilterQuery<T>[]
   ) => {
     if (!condition || !Object.keys(condition).length) return
 

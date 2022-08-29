@@ -27,7 +27,7 @@ export interface IUpdateQuery<TSchema> {
 
 export interface IPushQuery<T> {
   $slice?: number
-  $each: Array<T>
+  $each: T[]
   $sort?: SortOperator<T>
   $position?: number
 }

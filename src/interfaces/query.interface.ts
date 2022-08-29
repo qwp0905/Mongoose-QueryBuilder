@@ -3,101 +3,91 @@ import {
   QueryValue,
   FilterQuery,
   NotOperator,
-  RegexOperator,
-  AllOperator,
-  SizeOperator,
-  ElemMatchOperator
+  ElemMatchOperator,
+  PickKeys
 } from '@type'
 
 export interface IQueryBuilder<TSchema> {
-  eq: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
-    value?: QueryValue<TSchema, Keys>
+  eq: <Key extends QueryKey<TSchema>>(
+    key: Key,
+    value?: QueryValue<TSchema, Key>
   ) => IQueryBuilder<TSchema>
 
-  not: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
-    value?: NotOperator<QueryValue<TSchema, Keys>>
+  not: <Key extends QueryKey<TSchema>>(
+    key: Key,
+    value?: NotOperator<QueryValue<TSchema, Key>>
   ) => IQueryBuilder<TSchema>
 
-  gt: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
-    value?: QueryValue<TSchema, Keys>
+  gt: <Key extends QueryKey<TSchema>>(
+    key: Key,
+    value?: QueryValue<TSchema, Key>
   ) => IQueryBuilder<TSchema>
 
-  gte: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
-    value?: QueryValue<TSchema, Keys>
+  gte: <Key extends QueryKey<TSchema>>(
+    key: Key,
+    value?: QueryValue<TSchema, Key>
   ) => IQueryBuilder<TSchema>
 
-  lt: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
-    value?: QueryValue<TSchema, Keys>
+  lt: <Key extends QueryKey<TSchema>>(
+    key: Key,
+    value?: QueryValue<TSchema, Key>
   ) => IQueryBuilder<TSchema>
 
-  lte: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
-    value?: QueryValue<TSchema, Keys>
+  lte: <Key extends QueryKey<TSchema>>(
+    key: Key,
+    value?: QueryValue<TSchema, Key>
   ) => IQueryBuilder<TSchema>
 
-  exists: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
+  exists: <Key extends QueryKey<TSchema>>(
+    key: Key,
     value?: boolean
   ) => IQueryBuilder<TSchema>
 
-  regex: <Keys extends QueryKey<TSchema>>(
-    key: {
-      [P in Keys]: QueryValue<TSchema, P> extends string ? P : never
-    }[Keys],
-    value?: RegexOperator<QueryValue<TSchema, Keys>>
+  regex: <Key extends PickKeys<TSchema, string>>(
+    key: Key,
+    value?: string | RegExp
   ) => IQueryBuilder<TSchema>
 
-  in: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
-    value?: QueryValue<TSchema, Keys>[]
+  in: <Key extends QueryKey<TSchema>>(
+    key: Key,
+    value?: QueryValue<TSchema, Key>[]
   ) => IQueryBuilder<TSchema>
 
-  ne: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
-    value?: QueryValue<TSchema, Keys>
+  ne: <Key extends QueryKey<TSchema>>(
+    key: Key,
+    value?: QueryValue<TSchema, Key>
   ) => IQueryBuilder<TSchema>
 
-  nin: <Keys extends QueryKey<TSchema>>(
-    key: Keys,
-    value?: QueryValue<TSchema, Keys>[]
+  nin: <Key extends QueryKey<TSchema>>(
+    key: Key,
+    value?: QueryValue<TSchema, Key>[]
   ) => IQueryBuilder<TSchema>
 
-  all: <Keys extends QueryKey<TSchema>>(
-    key: {
-      [P in Keys]: QueryValue<TSchema, P> extends any[] ? P : never
-    }[Keys],
-    value?: AllOperator<QueryValue<TSchema, Keys>>
+  all: <Key extends PickKeys<TSchema, any[]>>(
+    key: Key,
+    value?: QueryValue<TSchema, Key>
   ) => IQueryBuilder<TSchema>
 
-  size: <Keys extends QueryKey<TSchema>>(
-    key: {
-      [P in Keys]: QueryValue<TSchema, P> extends any[] ? P : never
-    }[Keys],
-    value?: SizeOperator<QueryValue<TSchema, Keys>>
+  size: <Key extends PickKeys<TSchema, any[]>>(
+    key: Key,
+    value?: number
   ) => IQueryBuilder<TSchema>
 
-  elemMatch: <Keys extends QueryKey<TSchema>>(
-    key: {
-      [P in Keys]: QueryValue<TSchema, P> extends any[] ? P : never
-    }[Keys],
-    value?: ElemMatchOperator<QueryValue<TSchema, Keys>>
+  elemMatch: <Key extends PickKeys<TSchema, any[]>>(
+    key: Key,
+    value?: ElemMatchOperator<QueryValue<TSchema, Key>>
   ) => IQueryBuilder<TSchema>
 
   or: (
-    conditions?: FilterQuery<TSchema> | Array<FilterQuery<TSchema>>
+    conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]
   ) => IQueryBuilder<TSchema>
 
   and: (
-    conditions?: FilterQuery<TSchema> | Array<FilterQuery<TSchema>>
+    conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]
   ) => IQueryBuilder<TSchema>
 
   nor: (
-    conditions?: FilterQuery<TSchema> | Array<FilterQuery<TSchema>>
+    conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]
   ) => IQueryBuilder<TSchema>
 
   build: () => FilterQuery<TSchema>

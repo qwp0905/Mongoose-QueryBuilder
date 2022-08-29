@@ -9,13 +9,13 @@ export type FilterQuery<TSchema> = IRootQuerySelector<TSchema> & {
     | QueryValue<TSchema, P>
 }
 
-export type ElemMatchOperator<T> = T extends Array<infer U>
+export type ElemMatchOperator<T> = T extends (infer U)[]
   ? U extends NotObject
     ? IQuerySelector<U>
     : FilterQuery<U>
   : never
 
-export type AllOperator<T> = T extends Array<infer U> ? U[] : never
+export type AllOperator<T> = T extends (infer U)[] ? U[] : never
 
 export type SizeOperator<T> = T extends any[] ? number : never
 

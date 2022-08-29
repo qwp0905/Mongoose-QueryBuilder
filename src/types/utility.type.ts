@@ -58,4 +58,4 @@ export type StringNumber =
 // | '29'
 // | '30'
 
-export type Flatten<T> = T extends Array<infer U> ? U : T
+export type Flatten<T> = T extends (infer U)[] ? U : T
