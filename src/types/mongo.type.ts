@@ -122,7 +122,7 @@ type _QueryValue<T, Keys extends _QueryKey<T, MaxDepth>> = T extends (infer U)[]
         ? _QueryValue<U[], `.${K2}`>
         : never
       : never
-    : Keys extends `.${number}`
+    : Keys extends `.${StringNumber}`
     ? U
     : Keys extends `.${infer K1}`
     ? K1 extends keyof U
