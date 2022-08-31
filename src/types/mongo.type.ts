@@ -87,34 +87,28 @@ type _QueryValue<
   T,
   Keys extends _QueryKey<T, MaxDepth>
 > = Keys extends `.${infer K}`
-  ? K extends keyof T
-    ? T[K]
-    : K extends StringNumber
-    ? T extends (infer A)[]
+  ? T extends (infer A)[]
+    ? K extends keyof A
+      ? A[K]
+      : K extends StringNumber
       ? A
+      : K extends `${infer K1}.${infer K2}`
+      ? K1 extends keyof A
+        ? `.${K2}` extends _QueryKey<A[K1], Before<MaxDepth>>
+          ? _QueryValue<A[K1], `.${K2}`>
+          : never
+        : K1 extends StringNumber
+        ? `.${K2}` extends _QueryKey<A, Before<MaxDepth>>
+          ? _QueryValue<A, `.${K2}`>
+          : never
+        : never
       : never
+    : K extends keyof T
+    ? T[K]
     : K extends `${infer K1}.${infer K2}`
     ? K1 extends keyof T
-      ? K2 extends keyof T[K1]
-        ? T[K1][K2]
-        : K2 extends StringNumber
-        ? T[K1] extends (infer A)[]
-          ? A
-          : never
-        : `.${K2}` extends _QueryKey<T[K1], Before<MaxDepth>>
+      ? `.${K2}` extends _QueryKey<T[K1], Before<MaxDepth>>
         ? _QueryValue<T[K1], `.${K2}`>
-        : never
-      : K1 extends StringNumber
-      ? T extends (infer A1)[]
-        ? K2 extends keyof A1
-          ? A1[K2]
-          : K2 extends StringNumber
-          ? A1 extends (infer A2)[]
-            ? A2
-            : never
-          : `.${K2}` extends _QueryKey<A1, Before<MaxDepth>>
-          ? _QueryValue<A1, `.${K2}`>
-          : never
         : never
       : never
     : never

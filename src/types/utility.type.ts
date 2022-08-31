@@ -21,9 +21,9 @@ export type Join<
 
 export type MaxDepth = 0 | 1
 
-export type Next<T extends number> = [1, 2][T]
+export type Next<T extends MaxDepth> = [1, 2][T]
 
-export type Before<T extends number> = [never, 0][T]
+export type Before<T extends MaxDepth> = [-1, 0][T]
 
 export type StringNumber =
   | '0'
