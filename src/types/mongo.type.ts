@@ -66,52 +66,89 @@ type _QueryKey<T, Depth extends number> = Depth extends MaxDepth
         | `.${StringNumber}${_QueryKey<A, Next<Depth>>}`
         | _QueryKey<A, Next<Depth>>
     : {
-        [P in StringKeys<T>]: `.${P}${_QueryKey<T[P], Next<Depth>>}` | `.${P}`
+        [P in StringKeys<T>]: `.${P}` | `.${P}${_QueryKey<T[P], Next<Depth>>}`
       }[StringKeys<T>]
   : never
 
 export type QueryValue<
   TSchema,
   Keys extends QueryKey<TSchema>
-> = Keys extends `${infer K1}.${infer K2}`
+> = Keys extends keyof TSchema
+  ? TSchema[Keys]
+  : Keys extends `${infer K1}.${infer K2}`
   ? K1 extends keyof TSchema
     ? `.${K2}` extends _QueryKey<TSchema[K1], MaxDepth>
       ? _QueryValue<TSchema[K1], `.${K2}`>
       : never
     : never
-  : Keys extends keyof TSchema
-  ? TSchema[Keys]
   : never
 
-type _QueryValue<T, Keys extends _QueryKey<T, MaxDepth>> = T extends (infer U)[]
-  ? Keys extends `.${infer K1}.${infer K2}`
-    ? K1 extends keyof U
-      ? `.${K2}` extends _QueryKey<U[K1], Before<MaxDepth>>
-        ? _QueryValue<U[K1], `.${K2}`>
+type _QueryValue<
+  T,
+  Keys extends _QueryKey<T, MaxDepth>
+> = Keys extends `.${infer K}`
+  ? K extends keyof T
+    ? T[K]
+    : K extends StringNumber
+    ? T extends (infer A)[]
+      ? A
+      : never
+    : K extends `${infer K1}.${infer K2}`
+    ? K1 extends keyof T
+      ? K2 extends keyof T[K1]
+        ? T[K1][K2]
+        : K2 extends StringNumber
+        ? T[K1] extends (infer A)[]
+          ? A
+          : never
+        : `.${K2}` extends _QueryKey<T[K1], Before<MaxDepth>>
+        ? _QueryValue<T[K1], `.${K2}`>
         : never
       : K1 extends StringNumber
-      ? `.${K2}` extends _QueryKey<U[], Before<MaxDepth>>
-        ? _QueryValue<U[], `.${K2}`>
+      ? T extends (infer A1)[]
+        ? K2 extends keyof A1
+          ? A1[K2]
+          : K2 extends StringNumber
+          ? A1 extends (infer A2)[]
+            ? A2
+            : never
+          : `.${K2}` extends _QueryKey<A1, Before<MaxDepth>>
+          ? _QueryValue<A1, `.${K2}`>
+          : never
         : never
       : never
-    : Keys extends `.${StringNumber}`
-    ? U
-    : Keys extends `.${infer K1}`
-    ? K1 extends keyof U
-      ? U[K1]
-      : never
-    : never
-  : Keys extends `.${infer K1}.${infer K2}`
-  ? K1 extends keyof T
-    ? `.${K2}` extends _QueryKey<T[K1], Before<MaxDepth>>
-      ? _QueryValue<T[K1], `.${K2}`>
-      : never
-    : never
-  : Keys extends `.${infer K1}`
-  ? K1 extends keyof T
-    ? T[K1]
     : never
   : never
+
+// type _QueryValue<T, Keys extends _QueryKey<T, MaxDepth>> = T extends (infer U)[]
+//   ? Keys extends `.${infer K1}.${infer K2}`
+//     ? K1 extends keyof U
+//       ? `.${K2}` extends _QueryKey<U[K1], Before<MaxDepth>>
+//         ? _QueryValue<U[K1], `.${K2}`>
+//         : never
+//       : K1 extends StringNumber
+//       ? `.${K2}` extends _QueryKey<U[], Before<MaxDepth>>
+//         ? _QueryValue<U[], `.${K2}`>
+//         : never
+//       : never
+//     : Keys extends `.${StringNumber}`
+//     ? U
+//     : Keys extends `.${infer K1}`
+//     ? K1 extends keyof U
+//       ? U[K1]
+//       : never
+//     : never
+//   : Keys extends `.${infer K1}.${infer K2}`
+//   ? K1 extends keyof T
+//     ? `.${K2}` extends _QueryKey<T[K1], Before<MaxDepth>>
+//       ? _QueryValue<T[K1], `.${K2}`>
+//       : never
+//     : never
+//   : Keys extends `.${infer K1}`
+//   ? K1 extends keyof T
+//     ? T[K1]
+//     : never
+//   : never
 
 export type ExcludeKeys<TSchema, K> = {
   [P in QueryKey<TSchema>]: QueryValue<TSchema, P> extends K ? never : P
