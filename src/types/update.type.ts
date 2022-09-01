@@ -1,5 +1,5 @@
-import { IPushQuery, ISelector } from '@interface'
-import { QueryKey, QueryValue, NotObject } from '@type'
+import { IPushQuery } from '@interface'
+import { QueryKey, QueryValue, NotObject, FilterQuery } from '@type'
 
 export type SetOperator<T> = {
   [P in QueryKey<T>]?: QueryValue<T, P>
@@ -29,7 +29,7 @@ export type SortOperator<T> = T extends NotObject
 
 export type PullOperator<T> = {
   [P in QueryKey<T>]?: QueryValue<T, P> extends (infer U)[]
-    ? U | ISelector<U>
+    ? U | FilterQuery<U>
     : never
 }
 

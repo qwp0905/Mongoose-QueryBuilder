@@ -1,5 +1,5 @@
-import { Flatten, PickKeys, QueryKey, QueryValue } from '@type'
-import { IUpdateQuery, IPushQuery, ISelector } from '@interface'
+import { FilterQuery, Flatten, PickKeys, QueryKey, QueryValue } from '@type'
+import { IUpdateQuery, IPushQuery } from '@interface'
 
 export interface IUpdateQueryBuilder<TSchema> {
   set: <Key extends QueryKey<Omit<TSchema, '_id'>>>(
@@ -26,7 +26,7 @@ export interface IUpdateQueryBuilder<TSchema> {
   pull: <Key extends PickKeys<Omit<TSchema, '_id'>, any[]>>(
     key: Key,
     value: QueryValue<Omit<TSchema, '_id'>, Key> extends (infer U)[]
-      ? U | ISelector<U>
+      ? U | FilterQuery<U>
       : never
   ) => IUpdateQueryBuilder<TSchema>
 
