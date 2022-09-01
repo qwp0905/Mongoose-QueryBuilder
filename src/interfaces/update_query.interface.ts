@@ -25,9 +25,9 @@ export interface IUpdateQueryBuilder<TSchema> {
 
   pull: <Key extends PickKeys<Omit<TSchema, '_id'>, any[]>>(
     key: Key,
-    value:
-      | Flatten<QueryValue<Omit<TSchema, '_id'>, Key>>
-      | ISelector<Flatten<QueryValue<Omit<TSchema, '_id'>, Key>>>
+    value: QueryValue<Omit<TSchema, '_id'>, Key> extends (infer U)[]
+      ? U | ISelector<U>
+      : never
   ) => IUpdateQueryBuilder<TSchema>
 
   inc: <Key extends PickKeys<Omit<TSchema, '_id'>, number>>(
