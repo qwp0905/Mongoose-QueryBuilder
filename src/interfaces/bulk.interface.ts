@@ -27,7 +27,7 @@ export interface IReplaceOneOption<TSchema> {
 
 export interface IUpdateOneOption<TSchema> {
   filter: FilterQuery<TSchema>
-  update: IUpdateQuery<TSchema> | IUpdateQuery<TSchema>[]
+  update: IUpdateQuery<TSchema>
   upsert?: boolean
   collation?: ICollationOptions
   arrayFilters?: any[]
@@ -36,7 +36,7 @@ export interface IUpdateOneOption<TSchema> {
 
 export interface IUpdateManyOption<TSchema> {
   filter: FilterQuery<TSchema>
-  update: IUpdateQuery<TSchema> | IUpdateQuery<TSchema>[]
+  update: IUpdateQuery<TSchema>
   arrayFilters?: Document[]
   collation?: ICollationOptions
   hint?: any
@@ -62,5 +62,5 @@ export interface IBulkBuilder<TSchema> {
   updateMany: (options: IUpdateManyOption<TSchema>) => IBulkBuilder<TSchema>
   deleteOne: (options: IDeleteOneOption<TSchema>) => IBulkBuilder<TSchema>
   deleteMany: (options: IDeleteManyOption<TSchema>) => IBulkBuilder<TSchema>
-  build: () => any[] //! type does not match to mongodb package, specifically $pop!
+  build: () => any[] //! type does not match to mongodb package, specifically $set!
 }

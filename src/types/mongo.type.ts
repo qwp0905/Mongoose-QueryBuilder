@@ -72,10 +72,10 @@ type _QueryKey<T, Depth extends number> = Depth extends MaxDepth
 
 export type QueryValue<
   TSchema,
-  Keys extends QueryKey<TSchema>
-> = Keys extends keyof TSchema
-  ? TSchema[Keys]
-  : Keys extends `${infer K1}.${infer K2}`
+  Key extends QueryKey<TSchema>
+> = Key extends keyof TSchema
+  ? TSchema[Key]
+  : Key extends `${infer K1}.${infer K2}`
   ? K1 extends keyof TSchema
     ? `.${K2}` extends _QueryKey<TSchema[K1], MaxDepth>
       ? _QueryValue<TSchema[K1], `.${K2}`>
@@ -85,8 +85,8 @@ export type QueryValue<
 
 type _QueryValue<
   T,
-  Keys extends _QueryKey<T, MaxDepth>
-> = Keys extends `.${infer K}`
+  Key extends _QueryKey<T, MaxDepth>
+> = Key extends `.${infer K}`
   ? T extends (infer A)[]
     ? K extends keyof A
       ? A[K]
