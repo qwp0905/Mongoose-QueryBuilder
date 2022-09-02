@@ -9,7 +9,7 @@ export type NotObject =
   | Date
   | RegExp
   | Buffer
-  | ((...args: any[]) => any)
+  | ((...args: unknown[]) => unknown)
   | {
       _bsontype: string
     }

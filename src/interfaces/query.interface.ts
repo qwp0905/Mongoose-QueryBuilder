@@ -63,17 +63,17 @@ export interface IQueryBuilder<TSchema> {
     value?: QueryValue<TSchema, Key>[]
   ) => IQueryBuilder<TSchema>
 
-  all: <Key extends PickKeys<TSchema, any[]>>(
+  all: <Key extends PickKeys<TSchema, unknown[]>>(
     key: Key,
     value?: QueryValue<TSchema, Key>
   ) => IQueryBuilder<TSchema>
 
-  size: <Key extends PickKeys<TSchema, any[]>>(
+  size: <Key extends PickKeys<TSchema, unknown[]>>(
     key: Key,
     value?: number
   ) => IQueryBuilder<TSchema>
 
-  elemMatch: <Key extends PickKeys<TSchema, any[]>>(
+  elemMatch: <Key extends PickKeys<TSchema, unknown[]>>(
     key: Key,
     value?: ElemMatchOperator<QueryValue<TSchema, Key>>
   ) => IQueryBuilder<TSchema>

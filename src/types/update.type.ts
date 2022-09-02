@@ -28,7 +28,7 @@ export type AddToSetOperator<T> = {
 
 export type SortOperator<T> = T extends NotObject
   ? 1 | -1
-  : T extends any[]
+  : T extends unknown[]
   ? never
   : { [P in QueryKey<T>]?: 1 | -1 }
 
@@ -43,7 +43,7 @@ export type PullOperator<T> = {
 }
 
 export type PopOperator<T> = {
-  [P in QueryKey<T>]?: QueryValue<T, P> extends any[] ? 1 | -1 : never
+  [P in QueryKey<T>]?: QueryValue<T, P> extends unknown[] ? 1 | -1 : never
 }
 
 export type IncOperator<T> = {
