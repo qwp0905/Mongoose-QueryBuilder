@@ -56,11 +56,11 @@ export interface IDeleteManyOption<TSchema> {
 }
 
 export interface IBulkBuilder<TSchema> {
-  insertOne: (document: TSchema) => IBulkBuilder<TSchema>
-  replaceOne: (options: IReplaceOneOption<TSchema>) => IBulkBuilder<TSchema>
-  updateOne: (options: IUpdateOneOption<TSchema>) => IBulkBuilder<TSchema>
-  updateMany: (options: IUpdateManyOption<TSchema>) => IBulkBuilder<TSchema>
-  deleteOne: (options: IDeleteOneOption<TSchema>) => IBulkBuilder<TSchema>
-  deleteMany: (options: IDeleteManyOption<TSchema>) => IBulkBuilder<TSchema>
+  insertOne: (document: TSchema) => this
+  replaceOne: (options: IReplaceOneOption<TSchema>) => this
+  updateOne: (options: IUpdateOneOption<TSchema>) => this
+  updateMany: (options: IUpdateManyOption<TSchema>) => this
+  deleteOne: (options: IDeleteOneOption<TSchema>) => this
+  deleteMany: (options: IDeleteManyOption<TSchema>) => this
   build: () => any[] //! type does not match to mongodb package, specifically $set!
 }

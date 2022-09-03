@@ -49,13 +49,15 @@ import {
 //   ? TSchema[Keys]
 //   : never
 
-export type QueryKey<TSchema> =
-  | StringKeys<TSchema>
-  | {
-      [P in keyof TSchema]: TSchema[P] extends NotObject
-        ? never
-        : `${P extends symbol ? never : P}${_QueryKey<TSchema[P], 0>}`
-    }[keyof TSchema]
+export type QueryKey<TSchema> = TSchema extends NotObject | unknown[]
+  ? never
+  :
+      | StringKeys<TSchema>
+      | {
+          [P in keyof TSchema]: TSchema[P] extends NotObject
+            ? never
+            : `${Extract<P, string>}${_QueryKey<TSchema[P], 0>}`
+        }[keyof TSchema]
 
 type _QueryKey<T, Depth extends number> = Depth extends MaxDepth
   ? T extends NotObject
@@ -148,6 +150,6 @@ export type ExcludeKeys<TSchema, K> = {
   [P in QueryKey<TSchema>]: QueryValue<TSchema, P> extends K ? never : P
 }[QueryKey<TSchema>]
 
-export type PickKeys<TSchema, K> = {
+export type ExtractKeys<TSchema, K> = {
   [P in QueryKey<TSchema>]: QueryValue<TSchema, P> extends K ? P : never
 }[QueryKey<TSchema>]

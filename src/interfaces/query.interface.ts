@@ -4,91 +4,81 @@ import {
   FilterQuery,
   NotOperator,
   ElemMatchOperator,
-  PickKeys
+  ExtractKeys
 } from '@type'
 
 export interface IQueryBuilder<TSchema> {
   eq: <Key extends QueryKey<TSchema>>(
     key: Key,
     value?: QueryValue<TSchema, Key>
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
   not: <Key extends QueryKey<TSchema>>(
     key: Key,
     value?: NotOperator<QueryValue<TSchema, Key>>
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
   gt: <Key extends QueryKey<TSchema>>(
     key: Key,
     value?: QueryValue<TSchema, Key>
-  ) => IQueryBuilder<TSchema>
-
+  ) => this
   gte: <Key extends QueryKey<TSchema>>(
     key: Key,
     value?: QueryValue<TSchema, Key>
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
   lt: <Key extends QueryKey<TSchema>>(
     key: Key,
     value?: QueryValue<TSchema, Key>
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
   lte: <Key extends QueryKey<TSchema>>(
     key: Key,
     value?: QueryValue<TSchema, Key>
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
-  exists: <Key extends QueryKey<TSchema>>(
-    key: Key,
-    value?: boolean
-  ) => IQueryBuilder<TSchema>
+  exists: <Key extends QueryKey<TSchema>>(key: Key, value?: boolean) => this
 
-  regex: <Key extends PickKeys<TSchema, string>>(
+  regex: <Key extends ExtractKeys<TSchema, string>>(
     key: Key,
     value?: string | RegExp
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
   in: <Key extends QueryKey<TSchema>>(
     key: Key,
     value?: QueryValue<TSchema, Key>[]
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
   ne: <Key extends QueryKey<TSchema>>(
     key: Key,
     value?: QueryValue<TSchema, Key>
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
   nin: <Key extends QueryKey<TSchema>>(
     key: Key,
     value?: QueryValue<TSchema, Key>[]
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
-  all: <Key extends PickKeys<TSchema, unknown[]>>(
+  all: <Key extends ExtractKeys<TSchema, unknown[]>>(
     key: Key,
     value?: QueryValue<TSchema, Key>
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
-  size: <Key extends PickKeys<TSchema, unknown[]>>(
+  size: <Key extends ExtractKeys<TSchema, unknown[]>>(
     key: Key,
     value?: number
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
-  elemMatch: <Key extends PickKeys<TSchema, unknown[]>>(
+  elemMatch: <Key extends ExtractKeys<TSchema, unknown[]>>(
     key: Key,
     value?: ElemMatchOperator<QueryValue<TSchema, Key>>
-  ) => IQueryBuilder<TSchema>
+  ) => this
 
-  or: (
-    conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]
-  ) => IQueryBuilder<TSchema>
+  or: (conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]) => this
 
-  and: (
-    conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]
-  ) => IQueryBuilder<TSchema>
+  and: (conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]) => this
 
-  nor: (
-    conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]
-  ) => IQueryBuilder<TSchema>
+  nor: (conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]) => this
 
   build: () => FilterQuery<TSchema>
 }

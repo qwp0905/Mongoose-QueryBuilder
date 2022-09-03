@@ -40,19 +40,19 @@ export const UpdateQueryBuilder = <T>(): IUpdateQueryBuilder<T> => {
         return this
       }
       if (!query.$pull) query.$pull = {}
-      query.$pull = { ...query.$pull, [key]: value }
+      query.$pull[key] = value
       return this
     },
     inc(key, value) {
       if (!query.$inc) query.$inc = {}
       query.$inc = { ...query.$inc, [key]: value }
-
       return this
     },
     addToSet(key, value) {
       if (!query.$addToSet) query.$inc = {}
       if (value === undefined) return this
-      query.$addToSet = { ...query.$addToSet, [key]: value }
+      query.$addToSet[key] = value
+      return this
     },
     build() {
       return query

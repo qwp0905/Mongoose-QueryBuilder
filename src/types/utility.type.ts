@@ -1,5 +1,5 @@
 export type StringKeys<T> = {
-  [P in keyof T]: P extends symbol ? never : P
+  [P in keyof T]: Extract<P, string>
 }[keyof T]
 
 export type NotObject =
@@ -25,18 +25,18 @@ export type Next<T extends MaxDepth> = [1, 2][T]
 
 export type Before<T extends MaxDepth> = [-1, 0][T]
 
-export type StringNumber =
-  | '0'
-  | '1'
-  | '2'
-  | '3'
-  | '4'
-  | '5'
-  | '6'
-  | '7'
-  | '8'
-  | '9'
-  | '10'
+export type StringNumber = `${number}`
+// | '0'
+// | '1'
+// | '2'
+// | '3'
+// | '4'
+// | '5'
+// | '6'
+// | '7'
+// | '8'
+// | '9'
+// | '10'
 // | '11'
 // | '12'
 // | '13'

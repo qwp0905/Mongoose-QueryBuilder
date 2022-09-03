@@ -1,4 +1,4 @@
-import { Flatten, NotObject, PickKeys, QueryKey, QueryValue } from '@type'
+import { Flatten, NotObject, ExtractKeys, QueryKey, QueryValue } from '@type'
 import {
   IUpdateQuery,
   IPushQuery,
@@ -11,25 +11,22 @@ export interface IUpdateQueryBuilder<TSchema> {
   set: <Key extends QueryKey<Omit<TSchema, '_id'>>>(
     key: Key,
     value?: QueryValue<Omit<TSchema, '_id'>, Key>
-  ) => IUpdateQueryBuilder<TSchema>
+  ) => this
 
-  unset: <Key extends QueryKey<Omit<TSchema, '_id'>>>(
-    key: Key
-  ) => IUpdateQueryBuilder<TSchema>
+  unset: <Key extends QueryKey<Omit<TSchema, '_id'>>>(key: Key) => this
 
-  push: <Key extends PickKeys<Omit<TSchema, '_id'>, unknown[]>>(
+  push: <Key extends ExtractKeys<Omit<TSchema, '_id'>, unknown[]>>(
     key: Key,
-    value?:
-      | Flatten<QueryValue<Omit<TSchema, '_id'>, Key>>
-      | IPushQuery<Flatten<QueryValue<Omit<TSchema, '_id'>, Key>>>
-  ) => IUpdateQueryBuilder<TSchema>
+    value?: QueryValue<Omit<TSchema, '_id'>, Key> extends (infer U)[]
+      ? U | IPushQuery<U>
+      : never
+  ) => this
 
-  pop: <Key extends PickKeys<Omit<TSchema, '_id'>, unknown[]>>(
+  pop: <Key extends ExtractKeys<Omit<TSchema, '_id'>, unknown[]>>(
     key: Key,
     value?: 1 | -1
-  ) => IUpdateQueryBuilder<TSchema>
-
-  pull: <Key extends PickKeys<Omit<TSchema, '_id'>, unknown[]>>(
+  ) => this
+  pull: <Key extends ExtractKeys<Omit<TSchema, '_id'>, unknown[]>>(
     key: Key,
     value: QueryValue<Omit<TSchema, '_id'>, Key> extends (infer U)[]
       ? U extends NotObject
@@ -38,19 +35,19 @@ export interface IUpdateQueryBuilder<TSchema> {
             [K in QueryKey<U>]?: ISelector<QueryValue<U, K>>
           }
       : never
-  ) => IUpdateQueryBuilder<TSchema>
+  ) => this
 
-  inc: <Key extends PickKeys<Omit<TSchema, '_id'>, number>>(
+  inc: <Key extends ExtractKeys<Omit<TSchema, '_id'>, number>>(
     key: Key,
     value: number
-  ) => IUpdateQueryBuilder<TSchema>
+  ) => this
 
-  addToSet: <Key extends PickKeys<Omit<TSchema, '_id'>, unknown[]>>(
+  addToSet: <Key extends ExtractKeys<Omit<TSchema, '_id'>, unknown[]>>(
     key: Key,
     value?: QueryValue<Omit<TSchema, '_id'>, Key> extends (infer U)[]
       ? U | { $each: U[] }
       : never
-  ) => IUpdateQueryBuilder<TSchema>
+  ) => this
 
   build: () => IUpdateQuery<TSchema>
 }
