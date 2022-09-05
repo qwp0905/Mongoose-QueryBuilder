@@ -1,4 +1,4 @@
-import { Flatten, NotObject, ExtractKeys, QueryKey, QueryValue } from '@type'
+import { NotObject, ExtractKeys, QueryKey, QueryValue } from '@type'
 import {
   IUpdateQuery,
   IPushQuery,
