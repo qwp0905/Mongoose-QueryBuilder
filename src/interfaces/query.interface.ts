@@ -82,9 +82,9 @@ export interface IQueryBuilder<TSchema> {
 
   text: (
     $search: string,
-    $language?: string,
     $caseSensitive?: boolean,
-    $diacriticSensitive?: boolean
+    $diacriticSensitive?: boolean,
+    $language?: string
   ) => this
 
   build: () => FilterQuery<TSchema>

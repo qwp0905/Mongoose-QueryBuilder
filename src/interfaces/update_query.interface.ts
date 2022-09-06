@@ -26,6 +26,7 @@ export interface IUpdateQueryBuilder<TSchema> {
     key: Key,
     value?: 1 | -1
   ) => this
+
   pull: <Key extends ExtractKeys<Omit<TSchema, '_id'>, unknown[]>>(
     key: Key,
     value: QueryValue<Omit<TSchema, '_id'>, Key> extends (infer U)[]

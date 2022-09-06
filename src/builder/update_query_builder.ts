@@ -44,13 +44,16 @@ export const UpdateQueryBuilder = <T>(): IUpdateQueryBuilder<T> => {
       return this
     },
     inc(key, value) {
+      if (!value) {
+        return this
+      }
       if (!query.$inc) query.$inc = {}
       query.$inc = { ...query.$inc, [key]: value }
       return this
     },
     addToSet(key, value) {
-      if (!query.$addToSet) query.$inc = {}
       if (value === undefined) return this
+      if (!query.$addToSet) query.$inc = {}
       query.$addToSet[key] = value
       return this
     },

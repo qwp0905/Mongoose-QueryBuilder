@@ -110,11 +110,8 @@ export const QueryBuilder = <T>(): IQueryBuilder<T> => {
       setCondition('$nor', conditions)
       return this
     },
-    text($search, $language?, $caseSensitive?, $diacriticSensitive?) {
-      if (!$search) {
-        return this
-      }
-
+    text($search, $caseSensitive?, $diacriticSensitive?, $language?) {
+      if (!$search) return this
       query.$text = { $search, $caseSensitive, $diacriticSensitive, $language }
       return this
     },
