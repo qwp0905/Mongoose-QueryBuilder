@@ -1,8 +1,8 @@
 import {
-  IArrayQuerySelector,
+  IArrayOperator,
   IQueryBuilder,
-  IQuerySelector,
-  IRootQuerySelector
+  IQueryOperator,
+  ILogicalOperator
 } from '@interface'
 import { FilterQuery, QueryKey } from '@type'
 
@@ -11,7 +11,7 @@ export const QueryBuilder = <T>(): IQueryBuilder<T> => {
 
   const setKey = <Keys extends QueryKey<T>>(
     key: Keys,
-    tag: keyof IQuerySelector<unknown> | keyof IArrayQuerySelector<unknown>,
+    tag: keyof IQueryOperator<unknown> | keyof IArrayOperator<unknown>,
     value: unknown
   ) => {
     if (value === undefined) return
@@ -26,7 +26,7 @@ export const QueryBuilder = <T>(): IQueryBuilder<T> => {
   }
 
   const setCondition = (
-    tag: keyof IRootQuerySelector<T>,
+    tag: keyof ILogicalOperator<T>,
     condition?: FilterQuery<T> | FilterQuery<T>[]
   ) => {
     if (!condition || !Object.keys(condition).length) return
@@ -108,6 +108,14 @@ export const QueryBuilder = <T>(): IQueryBuilder<T> => {
     },
     nor(conditions) {
       setCondition('$nor', conditions)
+      return this
+    },
+    text($search, $language?, $caseSensitive?, $diacriticSensitive?) {
+      if (!$search) {
+        return this
+      }
+
+      query.$text = { $search, $caseSensitive, $diacriticSensitive, $language }
       return this
     },
     build() {

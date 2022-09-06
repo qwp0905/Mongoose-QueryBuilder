@@ -80,5 +80,12 @@ export interface IQueryBuilder<TSchema> {
 
   nor: (conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]) => this
 
+  text: (
+    $search: string,
+    $language?: string,
+    $caseSensitive?: boolean,
+    $diacriticSensitive?: boolean
+  ) => this
+
   build: () => FilterQuery<TSchema>
 }

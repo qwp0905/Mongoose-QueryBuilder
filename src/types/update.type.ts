@@ -1,8 +1,8 @@
 import {
   IPushQuery,
-  IQuerySelector,
-  IRootQuerySelector,
-  ISelector
+  IQueryOperator,
+  IRootQueryOperator,
+  IOperator
 } from '@interface'
 import { QueryKey, QueryValue, NotObject } from '@type'
 
@@ -35,9 +35,9 @@ export type SortOperator<T> = T extends NotObject
 export type PullOperator<T> = {
   [P in QueryKey<T>]?: QueryValue<T, P> extends (infer U)[]
     ? U extends NotObject
-      ? Omit<IQuerySelector<U>, '$eq'> | U
-      : IRootQuerySelector<U> & {
-          [K in QueryKey<U>]?: ISelector<QueryValue<U, K>>
+      ? Omit<IQueryOperator<U>, '$eq'> | U
+      : IRootQueryOperator<U> & {
+          [K in QueryKey<U>]?: IOperator<QueryValue<U, K>>
         }
     : never
 }

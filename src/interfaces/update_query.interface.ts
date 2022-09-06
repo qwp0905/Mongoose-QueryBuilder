@@ -2,9 +2,9 @@ import { NotObject, ExtractKeys, QueryKey, QueryValue } from '@type'
 import {
   IUpdateQuery,
   IPushQuery,
-  IQuerySelector,
-  IRootQuerySelector,
-  ISelector
+  IQueryOperator,
+  IRootQueryOperator,
+  IOperator
 } from '@interface'
 
 export interface IUpdateQueryBuilder<TSchema> {
@@ -30,9 +30,9 @@ export interface IUpdateQueryBuilder<TSchema> {
     key: Key,
     value: QueryValue<Omit<TSchema, '_id'>, Key> extends (infer U)[]
       ? U extends NotObject
-        ? Omit<IQuerySelector<U>, '$eq'> | U
-        : IRootQuerySelector<U> & {
-            [K in QueryKey<U>]?: ISelector<QueryValue<U, K>>
+        ? Omit<IQueryOperator<U>, '$eq'> | U
+        : IRootQueryOperator<U> & {
+            [K in QueryKey<U>]?: IOperator<QueryValue<U, K>>
           }
       : never
   ) => this

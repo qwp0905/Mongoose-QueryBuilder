@@ -7,11 +7,9 @@ import {
   SizeOperator
 } from '@type'
 
-export interface ISelector<T>
-  extends IQuerySelector<T>,
-    IArrayQuerySelector<T> {}
+export interface IOperator<T> extends IQueryOperator<T>, IArrayOperator<T> {}
 
-export interface IQuerySelector<T> {
+export interface IQueryOperator<T> {
   // Comparison
   $eq?: T
   $gt?: T
@@ -28,22 +26,25 @@ export interface IQuerySelector<T> {
   $regex?: RegexOperator<T>
 }
 
-export interface IArrayQuerySelector<T> {
+export interface IArrayOperator<T> {
   $all?: AllOperator<T>
   $elemMatch?: ElemMatchOperator<T>
   $size?: SizeOperator<T>
 }
 
-export interface IRootQuerySelector<TSchema> {
+export interface IRootQueryOperator<TSchema> extends ILogicalOperator<TSchema> {
+  $text?: {
+    $search: string
+    $language?: string
+    $caseSensitive?: boolean
+    $diacriticSensitive?: boolean
+  }
+  $where?: string | ((this: TSchema) => boolean)
+  $comment?: string
+}
+
+export interface ILogicalOperator<TSchema> {
   $and?: FilterQuery<TSchema>[]
   $nor?: FilterQuery<TSchema>[]
   $or?: FilterQuery<TSchema>[]
-  // $text?: {
-  //   $search: string
-  //   $language?: string
-  //   $caseSensitive?: boolean
-  //   $diacriticSensitive?: boolean
-  // }
-  // $where?: string | ((...arg: any[]) => any)
-  // $comment?: string
 }
