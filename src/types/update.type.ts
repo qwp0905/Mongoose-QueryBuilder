@@ -1,9 +1,4 @@
-import {
-  IPushQuery,
-  IQueryOperator,
-  IRootQueryOperator,
-  IOperator
-} from '@interface'
+import { IPushQuery, IQueryOperator, IOperator } from '@interface'
 import { QueryKey, QueryValue, NotObject } from '@type'
 
 export type SetOperator<T> = {
@@ -36,7 +31,9 @@ export type PullOperator<T> = {
   [P in QueryKey<T>]?: QueryValue<T, P> extends (infer U)[]
     ? U extends NotObject
       ? Omit<IQueryOperator<U>, '$eq'> | U
-      : IRootQueryOperator<U> & {
+      : U extends unknown[]
+      ? never
+      : {
           [K in QueryKey<U>]?: IOperator<QueryValue<U, K>>
         }
     : never

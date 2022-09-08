@@ -32,7 +32,9 @@ export interface IUpdateQueryBuilder<TSchema> {
     value: QueryValue<Omit<TSchema, '_id'>, Key> extends (infer U)[]
       ? U extends NotObject
         ? Omit<IQueryOperator<U>, '$eq'> | U
-        : IRootQueryOperator<U> & {
+        : U extends unknown[]
+        ? never
+        : {
             [K in QueryKey<U>]?: IOperator<QueryValue<U, K>>
           }
       : never
