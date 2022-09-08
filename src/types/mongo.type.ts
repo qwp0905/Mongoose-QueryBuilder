@@ -64,8 +64,8 @@ type _QueryKey<T, Depth extends number> = Depth extends MaxDepth
     ? never
     : T extends (infer A)[]
     ?
-        | `.${StringNumber | `$[${string}]` | `$`}`
-        | `.${StringNumber | `$[${string}]` | `$`}${_QueryKey<A, Next<Depth>>}`
+        | `.${StringNumber}`
+        | `.${StringNumber}${_QueryKey<A, Next<Depth>>}`
         | _QueryKey<A, Next<Depth>>
     : {
         [P in StringKeys<T>]: `.${P}` | `.${P}${_QueryKey<T[P], Next<Depth>>}`
@@ -92,14 +92,14 @@ type _QueryValue<
   ? T extends (infer A)[]
     ? K extends keyof A
       ? A[K]
-      : K extends StringNumber | `$` | `$[${string}]`
+      : K extends StringNumber
       ? A
       : K extends `${infer K1}.${infer K2}`
       ? K1 extends keyof A
         ? `.${K2}` extends _QueryKey<A[K1], Before<MaxDepth>>
           ? _QueryValue<A[K1], `.${K2}`>
           : never
-        : K1 extends StringNumber | `$` | `$[${string}]`
+        : K1 extends StringNumber
         ? `.${K2}` extends _QueryKey<A, Before<MaxDepth>>
           ? _QueryValue<A, `.${K2}`>
           : never
