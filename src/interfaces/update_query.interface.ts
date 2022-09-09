@@ -1,11 +1,5 @@
 import { NotObject, ExtractKeys, QueryKey, QueryValue } from '@type'
-import {
-  IUpdateQuery,
-  IPushQuery,
-  IQueryOperator,
-  IRootQueryOperator,
-  IOperator
-} from '@interface'
+import { IUpdateQuery, IPushQuery, IQueryOperator, IOperator } from '@interface'
 
 export interface IUpdateQueryBuilder<TSchema> {
   set: <Key extends QueryKey<Omit<TSchema, '_id'>>>(

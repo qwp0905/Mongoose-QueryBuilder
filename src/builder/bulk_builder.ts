@@ -8,24 +8,30 @@ export const BulkBuilder = <T>(): IBulkBuilder<T> => {
       bulk.push({ insertOne: { document } })
       return this
     },
-    replaceOne(options) {
-      bulk.push({ replaceOne: options })
+    replaceOne(filter, replacement, upsert?, collation?, hint?) {
+      bulk.push({
+        replaceOne: { filter, replacement, upsert, collation, hint }
+      })
       return this
     },
-    updateOne(options) {
-      bulk.push({ updateOne: options })
+    updateOne(filter, update, arrayFilters?, upsert?, collation?, hint?) {
+      bulk.push({
+        updateOne: { filter, update, arrayFilters, upsert, collation, hint }
+      })
       return this
     },
-    updateMany(options) {
-      bulk.push({ updateMany: options })
+    updateMany(filter, update, arrayFilters?, upsert?, collation?, hint?) {
+      bulk.push({
+        updateMany: { filter, update, arrayFilters, upsert, collation, hint }
+      })
       return this
     },
-    deleteOne(options) {
-      bulk.push({ deleteOne: options })
+    deleteOne(filter, collation?, hint?) {
+      bulk.push({ deleteOne: { filter, collation, hint } })
       return this
     },
-    deleteMany(options) {
-      bulk.push({ deleteMany: options })
+    deleteMany(filter, collation?, hint?) {
+      bulk.push({ deleteMany: { filter, collation, hint } })
       return this
     },
     build() {

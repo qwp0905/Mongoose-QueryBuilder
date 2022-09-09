@@ -57,10 +57,38 @@ export interface IDeleteManyOption<TSchema> {
 
 export interface IBulkBuilder<TSchema> {
   insertOne: (document: TSchema) => this
-  replaceOne: (options: IReplaceOneOption<TSchema>) => this
-  updateOne: (options: IUpdateOneOption<TSchema>) => this
-  updateMany: (options: IUpdateManyOption<TSchema>) => this
-  deleteOne: (options: IDeleteOneOption<TSchema>) => this
-  deleteMany: (options: IDeleteManyOption<TSchema>) => this
-  build: () => any[] //! type does not match to mongodb package, specifically $set!
+  replaceOne: (
+    filter: FilterQuery<TSchema>,
+    replacement: Omit<TSchema, '_id'>,
+    upsert?: boolean,
+    collation?: ICollationOptions,
+    hint?: any
+  ) => this
+  updateOne: (
+    filter: FilterQuery<TSchema>,
+    update: IUpdateQuery<TSchema> | IUpdateQuery<TSchema>[],
+    arrayFilters?: any[],
+    upsert?: boolean,
+    collation?: ICollationOptions,
+    hint?: any
+  ) => this
+  updateMany: (
+    filter: FilterQuery<TSchema>,
+    update: IUpdateQuery<TSchema> | IUpdateQuery<TSchema>[],
+    arrayFilters?: any[],
+    upsert?: boolean,
+    collation?: ICollationOptions,
+    hint?: any
+  ) => this
+  deleteOne: (
+    filter: FilterQuery<TSchema>,
+    collation?: ICollationOptions,
+    hint?: any
+  ) => this
+  deleteMany: (
+    filter: FilterQuery<TSchema>,
+    collation?: ICollationOptions,
+    hint?: any
+  ) => this
+  build: () => Bulk<TSchema>[] //! type does not match to mongodb package, specifically $set!
 }

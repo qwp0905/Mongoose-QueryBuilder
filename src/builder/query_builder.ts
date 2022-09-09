@@ -27,17 +27,13 @@ export const QueryBuilder = <T>(): IQueryBuilder<T> => {
 
   const setCondition = (
     tag: keyof ILogicalOperator<T>,
-    condition?: FilterQuery<T> | FilterQuery<T>[]
+    condition?: FilterQuery<T>
   ) => {
     if (!condition || !Object.keys(condition).length) return
 
     if (!query[tag]) query[tag] = []
 
-    if (Array.isArray(condition)) {
-      query[tag] = [...query[tag], ...condition]
-    } else {
-      query[tag].push(condition)
-    }
+    query[tag].push(condition)
   }
   return {
     eq(key, value) {

@@ -74,11 +74,11 @@ export interface IQueryBuilder<TSchema> {
     value?: ElemMatchOperator<QueryValue<TSchema, Key>>
   ) => this
 
-  or: (conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]) => this
+  or: (conditions?: FilterQuery<TSchema>) => this
 
-  and: (conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]) => this
+  and: (conditions?: FilterQuery<TSchema>) => this
 
-  nor: (conditions?: FilterQuery<TSchema> | FilterQuery<TSchema>[]) => this
+  nor: (conditions?: FilterQuery<TSchema>) => this
 
   text: (
     $search: string,
