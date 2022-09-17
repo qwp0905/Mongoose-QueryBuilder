@@ -57,6 +57,7 @@ export interface IDeleteManyOption<TSchema> {
 
 export interface IBulkBuilder<TSchema> {
   insertOne: (document: TSchema) => this
+
   replaceOne: (
     filter: FilterQuery<TSchema>,
     replacement: Omit<TSchema, '_id'>,
@@ -64,6 +65,7 @@ export interface IBulkBuilder<TSchema> {
     collation?: ICollationOptions,
     hint?: any
   ) => this
+
   updateOne: (
     filter: FilterQuery<TSchema>,
     update: IUpdateQuery<TSchema> | IUpdateQuery<TSchema>[],
@@ -72,6 +74,7 @@ export interface IBulkBuilder<TSchema> {
     collation?: ICollationOptions,
     hint?: any
   ) => this
+
   updateMany: (
     filter: FilterQuery<TSchema>,
     update: IUpdateQuery<TSchema> | IUpdateQuery<TSchema>[],
@@ -80,15 +83,18 @@ export interface IBulkBuilder<TSchema> {
     collation?: ICollationOptions,
     hint?: any
   ) => this
+
   deleteOne: (
     filter: FilterQuery<TSchema>,
     collation?: ICollationOptions,
     hint?: any
   ) => this
+
   deleteMany: (
     filter: FilterQuery<TSchema>,
     collation?: ICollationOptions,
     hint?: any
   ) => this
+
   build: () => Bulk<TSchema>[] //! type does not match to mongodb package, specifically $set!
 }

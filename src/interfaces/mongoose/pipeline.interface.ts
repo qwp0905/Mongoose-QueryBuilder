@@ -132,7 +132,6 @@ export interface IPlanCacheStats {
 }
 
 export interface IProject {
-  /** [`$project` reference](https://docs.mongodb.com/manual/reference/operator/aggregation/project/) */
   $project: {
     [field: string]: any
   }
@@ -171,7 +170,6 @@ export interface ISet {
 }
 
 // export interface ISetWindowFields {
-//   /** [`$setWindowFields` reference](https://docs.mongodb.com/manual/reference/operator/aggregation/setWindowFields/) */
 //   $setWindowFields: {
 //     partitionBy?: any
 //     sortBy?: Record<string, 1 | -1>
